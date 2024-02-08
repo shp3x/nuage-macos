@@ -70,24 +70,8 @@ struct WaveformSlider<Value : BinaryFloatingPoint, MinValueLabel: View, MaxValue
                             .frame(width: max(0, geometry.size.width-barValue))
                     }
                     .mask(WaveformView(url: url))
-                    
-                    knob()
-                        .frame(width: knobDiameter, height: knobDiameter)
-                        .offset(x: knobValue)
                 }
             }.gesture(drag)
-        }
-    }
-    
-    @ViewBuilder private func knob() -> some View {
-        let knob = Circle()
-            .strokeBorder(knobBorderColor, lineWidth: 1)
-
-        if let knobColor = knobColor {
-            knob.background(Circle().foregroundColor(knobColor))
-        }
-        else {
-            knob.background(.ultraThinMaterial, in: Circle())
         }
     }
     
