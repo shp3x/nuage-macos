@@ -69,14 +69,3 @@ struct WaveformView: View {
     }
     
 }
-
-//struct WaveformView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        let half = Array(1...50)
-//        let samples = half.reversed() + half
-//        let waveform = Waveform(samples: samples)
-//        WaveformView(with: waveform)
-//            .frame(width: 400, height: 100)
-//            .foregroundColor(.accentColor)
-//    }
-//}

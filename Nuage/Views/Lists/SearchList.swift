@@ -74,7 +74,7 @@ struct SearchList: View {
                             Section(content: {
                                 HStack(alignment: .top) {
                                     ForEach(users) { UserItem(user: $0) }
-                                }
+                                } 
                             }, header: header(for: .users), footer: footer)
                         }
                         if !tracks.isEmpty {

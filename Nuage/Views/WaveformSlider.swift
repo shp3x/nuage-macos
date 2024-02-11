@@ -35,14 +35,12 @@ struct WaveformSlider<Value : BinaryFloatingPoint, MinValueLabel: View, MaxValue
     }
     
     @ViewBuilder private func slider() -> some View {
-        let knobDiameter: CGFloat = 13
         
         GeometryReader { geometry in
             let currentValue = updatingValue ?? value
             let rangeWidth = range.upperBound - range.lowerBound
             let relativeValue = rangeWidth > 0 ? CGFloat(currentValue/rangeWidth) : CGFloat(0)
             let barValue = geometry.size.width * relativeValue
-            let knobValue = geometry.size.width * relativeValue - knobDiameter/2.0
             
             let drag = DragGesture(minimumDistance: 0, coordinateSpace: .local).onChanged { gesture in
                 var newValue = Value(gesture.location.x/geometry.size.width) * rangeWidth + range.lowerBound
@@ -63,33 +61,18 @@ struct WaveformSlider<Value : BinaryFloatingPoint, MinValueLabel: View, MaxValue
                 ZStack(alignment: Alignment(horizontal: .leading, vertical: .center)) {
                     HStack(spacing: 0) {
                         Rectangle()
-                            .foregroundColor(waveformForegroundColor)
+                            .foregroundColor(Color(red: 1, green: 0.35, blue: 0.0))
                             .frame(width: barValue)
                         Rectangle()
                             .foregroundColor(waveformBackgroundColor)
                             .frame(width: max(0, geometry.size.width-barValue))
                     }
                     .mask(WaveformView(url: url))
-                    
-                    knob()
-                        .frame(width: knobDiameter, height: knobDiameter)
-                        .offset(x: knobValue)
                 }
             }.gesture(drag)
         }
     }
-    
-    @ViewBuilder private func knob() -> some View {
-        let knob = Circle()
-            .strokeBorder(knobBorderColor, lineWidth: 1)
 
-        if let knobColor = knobColor {
-            knob.background(Circle().foregroundColor(knobColor))
-        }
-        else {
-            knob.background(.ultraThinMaterial, in: Circle())
-        }
-    }
     
     init(url: URL?, value: Binding<Value>, in range: ClosedRange<Value>, @ViewBuilder minValueLabel: @escaping (Value) -> MinValueLabel, @ViewBuilder maxValueLabel: @escaping (Value) -> MaxValueLabel, knobColor: Color? = nil, knobBorderColor: Color? = nil, waveformForegroundColor: Color? = nil, waveformBackgroundColor: Color? = nil) {
         self.url = url

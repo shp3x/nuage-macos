@@ -61,7 +61,7 @@ enum SidebarItem: RawRepresentable {
     
     var imageName: String? {
         switch self {
-        case .stream: return "bolt.horizontal.fill"
+        case .stream: return "icloud.fill"
         case .likes: return "heart.fill"
         case .history: return "clock.fill"
         case .following: return "person.2.fill"

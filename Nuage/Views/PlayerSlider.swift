@@ -143,7 +143,7 @@ struct PlayerSlider<Value : BinaryFloatingPoint, MinValueLabel: View, MaxValueLa
 struct PlayerSlider_Previews: PreviewProvider {
     
     static var previews: some View {
-        let value = Binding<Float>(get: { return 0.8 },
+        let value = Binding<Float>(get: { return 0.6 },
                                    set: { _ in })
         PlayerSlider(value: value, in: 0...1)
     }

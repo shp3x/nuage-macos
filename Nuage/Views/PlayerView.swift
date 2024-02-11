@@ -33,13 +33,19 @@ struct PlayerView: View {
                     artwork()
                         .aspectRatio(1.0, contentMode: .fit)
                         .padding(.vertical, 8)
+                        .cornerRadius(10.0)
 
                     trackDetails()
                 }
                 .frame(width: 150, alignment: .leading)
                 .buttonStyle(.plain)
                 
-                FeedbackStack(for: player.currentStream, horizontal: false)
+                FeedbackStack(for: player.currentStream, horizontal: true)
+                
+                Spacer()
+                    .frame(width: 8)
+                
+                playbackControls()
                 
                 Spacer()
                     .frame(width: 8)
@@ -49,14 +55,9 @@ struct PlayerView: View {
                 
                 Spacer()
                     .frame(width: 8)
-                
-                playbackControls()
-                
-                Spacer()
-                    .frame(width: 8)
             }
             .padding(.horizontal, 8)
-            .background(.thinMaterial)
+            .background(.ultraThickMaterial)
         }
         .frame(height: 60)
     }
@@ -103,10 +104,17 @@ struct PlayerView: View {
                 .frame(width: 70, alignment: .leading)
         })
         .id(player.currentStream?.waveformURL)
+        
+        Button(action: { self.showingQueue.toggle() }) {
+            resizableImage(name: "text.line.first.and.arrowtriangle.forward")
+        }
+        .buttonStyle(.borderless)
+        .if(showingQueue) { $0.foregroundColor(.primary) }
+        .popover(isPresented: $showingQueue, content: queue)
     }
     
     @ViewBuilder private func playbackControls() -> some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 15) {
             Button(action: player.advanceBackward) {
                 resizableImage(name: "backward.fill")
             }
@@ -132,37 +140,23 @@ struct PlayerView: View {
             .buttonStyle(.borderless)
             .if(showingVolumeControls) { $0.foregroundColor(.primary) }
             .popover(isPresented: $showingVolumeControls, content: volumeControls)
-            
-            Button(action: { self.showingQueue.toggle() }) {
-                resizableImage(name: "text.line.first.and.arrowtriangle.forward")
-            }
-            .buttonStyle(.borderless)
-            .if(showingQueue) { $0.foregroundColor(.primary) }
-            .popover(isPresented: $showingQueue, content: queue)
         }
+        .padding()
     }
     
     @ViewBuilder private func volumeControls() -> some View {
-        HStack(spacing: 6) {
-            Button(action: {
-                player.volume = 0
-            }, label: {
-                resizableImage(name: "speaker.fill", height: 13, width: nil)
-            })
-            .focusable(false)
-            .buttonStyle(.borderless)
+        VStack() {
             
             PlayerSlider(value: $player.volume, in: 0...1, updateStrategy: .incremental(0.05))
                 .frame(width: 100)
+                .rotationEffect(.degrees(-90))
+                .padding(.bottom, 50)
             
-            Button(action: {
-                player.volume = 1
-            }, label: {
-                resizableImage(name: "speaker.wave.3.fill", height: 13, width: nil)
-            })
             .focusable(false)
             .buttonStyle(.borderless)
-        }.padding()
+        }
+        .padding(.top, 50)
+        .padding(.horizontal, -30)
     }
     
     @ViewBuilder private func queue() -> some View {

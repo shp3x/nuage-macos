@@ -58,18 +58,6 @@ struct FeedbackStack<T: SoundCloudIdentifiable>: View {
         }
     }
     
-    private var toggleRepost: () -> () {
-        if let track = item as? Track {
-            return toggleRepostTrack(track)
-        }
-        else if let playlist = item as? UserPlaylist {
-            return toggleRepostPlaylist(playlist)
-        }
-        else {
-            return {}
-        }
-    }
-    
     @Environment(\.likes) private var likes: [Track]
     @Environment(\.playlists) private var playlists: [AnyPlaylist]
     @Environment(\.posts) private var posts: [Post]
@@ -93,17 +81,9 @@ struct FeedbackStack<T: SoundCloudIdentifiable>: View {
             let name = isLiked ? "heart.fill" : "heart"
             Image(systemName: name)
         }
+        .foregroundColor(Color(red: 1, green: 0.35, blue: 0.0))
         .disabled(item == nil)
         .buttonStyle(.borderless)
-
-        if let isRepost = isRepost {
-            Button(action: toggleRepost) {
-                let name = isRepost ? "arrow.triangle.2.circlepath.circle.fill" : "arrow.triangle.2.circlepath.circle"
-                Image(systemName: name)
-            }
-            .disabled(item == nil)
-            .buttonStyle(.borderless)
-        }
     }
     
     @ViewBuilder private func resizableImage(name: String, height: CGFloat? = 16, width: CGFloat? = 16) -> some View {
