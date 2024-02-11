@@ -104,3 +104,5 @@ struct FeedbackStack<T: SoundCloudIdentifiable>: View {
     }
     
 }
+
+//view
